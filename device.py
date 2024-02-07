@@ -12,7 +12,7 @@ import __main__
 from register import Reg
 from utils import *
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 def pack_regs(method, regs):
     rr = []

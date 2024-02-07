@@ -7,7 +7,7 @@ from register import *
 from victron_regs import *
 import vreglink
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 class VE_Meter_A1B1(vreglink.VregLink, device.EnergyMeter):
     productid = 0xa1b1

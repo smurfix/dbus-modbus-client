@@ -6,7 +6,7 @@ import device
 import probe
 from register import *
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 # CT Type Identifier register to type name mapping
 CT_TYPES = [

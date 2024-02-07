@@ -1,7 +1,7 @@
 import logging
 from typing import NamedTuple
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 class NetDevSpec(NamedTuple):
     method: str
