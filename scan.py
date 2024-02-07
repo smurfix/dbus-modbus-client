@@ -46,11 +46,11 @@ class Scanner:
             pass
         except Exception as exc:
             log.warn('Exception during bus scan', exc_info=exc)
-
-        if self.running:
-            log.info('Scan completed in %d seconds', t1 - t0)
         else:
-            log.info('Scan aborted')
+            if self.running:
+                log.info('Scan completed in %d seconds', t1 - t0)
+            else:
+                log.info('Scan aborted')
 
         self.running = False
 
