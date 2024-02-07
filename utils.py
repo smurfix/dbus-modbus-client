@@ -60,7 +60,8 @@ def get_networks(blacklist):
 
                 net = ipaddress.IPv4Interface(u'' + v[2])
                 nets.append(net)
-    except:
+    except Exception as exc:
+        log.info("get_networks failed: %r", exc)
         pass
 
     return nets

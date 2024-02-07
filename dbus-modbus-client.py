@@ -10,7 +10,6 @@ import pymodbus.constants
 from settingsdevice import SettingsDevice
 import signal
 import time
-import traceback
 from vedbus import VeDbusService
 from gi.repository import GLib
 
@@ -109,9 +108,8 @@ class Client:
             try:
                 self.init_device(d, False)
                 self.devices.append(d)
-            except:
-                log.info('Error initialising %s, skipping', d)
-                traceback.print_exc()
+            except Exception as exc:
+                log.info('Error initialising %s, skipping', d, exc_info=exc)
 
         self.save_devices()
 
@@ -146,7 +144,7 @@ class Client:
         try:
             dev.update()
             dev.last_seen = time.time()
-        except:
+        except Exception:
             if time.time() - dev.last_seen > FAIL_TIMEOUT:
                 log.info('Device %s failed', dev)
                 if self.err_exit:
@@ -165,7 +163,7 @@ class Client:
             try:
                 self.init_device(d, nosave, enable)
                 self.devices.append(d)
-            except:
+            except Exception:
                 failed.append(d.spec)
                 d.destroy()
 
@@ -262,9 +260,8 @@ class Client:
     def update_timer(self):
         try:
             self.update()
-        except:
-            log.error('Uncaught exception in update')
-            traceback.print_exc()
+        except Exception:
+            log.exception('Uncaught exception in update')
 
         return True
 

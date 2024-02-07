@@ -18,7 +18,8 @@ def probe(mlist, pr_cb=None, pr_interval=10, timeout=None, filt=None):
         try:
             modbus = client.make_client(m)
             unit = m.unit
-        except:
+        except Exception as exc:
+            log.info("Cound not create client: %r", exc)
             continue
 
         if not modbus:
@@ -44,7 +45,8 @@ def probe(mlist, pr_cb=None, pr_interval=10, timeout=None, filt=None):
                     t1 = time.time()
                     if d:
                         break
-            except:
+            except Exception as exc:
+                log.warning("Scan failed: %r", exc, exc_info=exc)
                 break
 
             if d:

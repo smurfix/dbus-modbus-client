@@ -50,7 +50,7 @@ def fromstrings(ss):
     for s in ss:
         try:
             d.add(fromstring(s))
-        except:
+        except Exception:
             continue
 
     return d
