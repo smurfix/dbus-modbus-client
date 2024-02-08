@@ -221,8 +221,9 @@ class Client:
         if scan:
             self.start_scan(force_scan)
 
-    def init(self, force_scan):
-        self.watchdog.start()
+    def init(self, force_scan, watchdog=True):
+        if watchdog:
+            self.watchdog.start()
         self.init_settings()
         self.init_devices(force_scan)
 
@@ -385,7 +386,7 @@ def main():
         client = NetClient()
 
     client.err_exit = args.exit
-    client.init(args.force_scan)
+    client.init(args.force_scan, watchdog = not args.debug)
 
     GLib.timeout_add(UPDATE_INTERVAL, client.update_timer)
     mainloop.run()
