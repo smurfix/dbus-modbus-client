@@ -44,7 +44,7 @@ except ImportError:
     pass
 
 import logging
-log = logging.getLogger()
+log = logging.getLogger("d-m-client")
 
 NAME = os.path.basename(__file__)
 VERSION = '1.49'
