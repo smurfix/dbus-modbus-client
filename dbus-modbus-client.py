@@ -30,6 +30,19 @@ import abb
 import comap
 import victron_em
 
+import sys
+sys.path.append("/data/root/victron-twe-meter-library")
+try:
+    import ABB_B2x
+    import EM24RTU
+    import Eastron_SDM120
+    import Eastron_SDM630v1
+    import Eastron_SDM630v2
+    import Eastron_SDM72D
+except ImportError:
+    raise
+    pass
+
 import logging
 log = logging.getLogger()
 
