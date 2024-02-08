@@ -28,12 +28,15 @@ all:
 
 install:
 	install -d $(DESTDIR)$(bindir)
+	install -d $(DESTDIR)$(bindir)/meter-library
 	install -m 0644 $(FILES) $(DESTDIR)$(bindir)
 	install -m 0644 $(addprefix ext/velib_python/,$(VELIB)) \
 		$(DESTDIR)$(bindir)
 	chmod +x $(DESTDIR)$(bindir)/$(firstword $(FILES))
+	install -m 0644 ext/meter-library/*.py $(DESTDIR)$(bindir)/meter-library
 
 link:
 	ln -sf $(addprefix ext/velib_python/,$(VELIB)) .
+	ln -sf ext/meter-library .
 
 clean:

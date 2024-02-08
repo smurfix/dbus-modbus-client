@@ -31,7 +31,7 @@ import comap
 import victron_em
 
 import sys
-sys.path.append("/data/root/victron-twe-meter-library")
+sys.path.insert(1,sys.path[0]+"/meter-library")
 try:
     import ABB_B2x
     import EM24RTU
@@ -40,7 +40,6 @@ try:
     import Eastron_SDM630v2
     import Eastron_SDM72D
 except ImportError:
-    raise
     pass
 
 import logging
