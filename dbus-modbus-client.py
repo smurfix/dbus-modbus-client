@@ -7,6 +7,7 @@ import faulthandler
 from functools import partial
 import os
 import pymodbus.constants
+from pymodbus.exceptions import ModbusException
 from settingsdevice import SettingsDevice
 import signal
 import time
@@ -144,13 +145,19 @@ class Client:
         try:
             dev.update()
             dev.last_seen = time.time()
-        except Exception:
+        except ModbusException:
             if time.time() - dev.last_seen > FAIL_TIMEOUT:
                 log.info('Device %s failed', dev)
                 if self.err_exit:
                     os._exit(1)
                 self.dev_failed(dev)
                 self.del_device(dev)
+        except Exception:
+            log.exception('Device %s failed', dev)
+            if self.err_exit:
+                os._exit(1)
+            self.dev_failed(dev)
+            self.del_device(dev)
 
     def probe_filter(self, dev):
         return dev not in self.devices
