@@ -367,7 +367,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(format='%(levelname)-8s %(message)s',
-                        level=(logging.DEBUG if args.debug else logging.INFO))
+        level=logging.DEBUG if args.debug else logging.INFO, force=True)
 
     logging.getLogger('pymodbus.client').setLevel(logging.CRITICAL)
 
