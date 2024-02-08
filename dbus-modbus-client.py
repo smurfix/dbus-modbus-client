@@ -358,7 +358,7 @@ def main():
     logging.basicConfig(format='%(levelname)-8s %(message)s',
                         level=(logging.DEBUG if args.debug else logging.INFO))
 
-    logging.getLogger('pymodbus.client.sync').setLevel(logging.CRITICAL)
+    logging.getLogger('pymodbus.client').setLevel(logging.CRITICAL)
 
     signal.signal(signal.SIGINT, lambda s, f: os._exit(1))
     faulthandler.register(signal.SIGUSR1)

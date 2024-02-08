@@ -343,7 +343,7 @@ class ModbusDevice(BaseDevice):
                                      self.modbus.host)
         elif self.modbus.method in ['rtu', 'ascii']:
             return 'Modbus %s %s:%d' % (self.modbus.method.upper(),
-                                        os.path.basename(self.modbus.port),
+                                        os.path.basename(self.modbus.params.port),
                                         self.unit)
         return 'Modbus'
 

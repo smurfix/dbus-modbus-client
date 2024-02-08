@@ -3,8 +3,10 @@ import struct
 import threading
 import time
 
-from pymodbus.client.sync import *
+from pymodbus.client import *
 from pymodbus.utilities import computeCRC
+from pymodbus.framer.rtu_framer import ModbusRtuFramer
+from pymodbus.framer.ascii_framer import ModbusAsciiFramer
 
 class RefCount:
     def __init__(self, *args, **kwargs):
@@ -50,24 +52,29 @@ class UdpClient(RefCount, ModbusUdpClient):
             self.socket.settimeout(t)
 
 class SerialClient(RefCount, ModbusSerialClient):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, method = None, **kwargs):
+        if method == "rtu":
+            framer = ModbusRtuFramer
+        elif method == "ascii":
+            framer = ModbusAsciiFramer
+        else:
+            raise ValueError("RTU or ASCII only")
+        self.method = method
+        super().__init__(*args, framer=framer, **kwargs)
         self.lock = threading.RLock()
 
     @property
     def timeout(self):
-        return self._timeout
+        return self.params.timeout
 
     @timeout.setter
     def timeout(self, t):
-        self._timeout = t
-        if self.socket:
-            self.socket.timeout = t
+        self.params.timeout = t
 
     def put(self):
         super().put()
         if self.refcount == 0:
-            del serial_ports[os.path.basename(self.port)]
+            del serial_ports[os.path.basename(self.params.port)]
 
     def execute(self, request=None):
         with self.lock:
@@ -99,7 +106,7 @@ def make_client(m):
         return client.get()
 
     dev = '/dev/%s' % tty
-    client = SerialClient(m.method, port=dev, baudrate=m.rate)
+    client = SerialClient(port=dev, baudrate=m.rate, method=m.method)
     if not client.connect():
         client.put()
         return None
