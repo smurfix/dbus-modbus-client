@@ -288,8 +288,8 @@ class NetClient(Client):
                           onchangecallback=self.set_scan)
         self.svc.add_path('/ScanProgress', None, gettextcallback=percent)
 
-    def init(self, *args):
-        super().init(*args)
+    def init(self, *args, **kwargs):
+        super().init(*args, **kwargs)
 
         self.mdns = mdns.MDNS()
         self.mdns.start()
