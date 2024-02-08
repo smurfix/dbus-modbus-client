@@ -363,7 +363,7 @@ class SerialClient(Client):
 def main():
     parser = ArgumentParser(add_help=True)
     parser.add_argument('-d', '--debug', help='enable debug logging',
-                        action='store_true')
+                        action='count')
     parser.add_argument('-f', '--force-scan', action='store_true')
     parser.add_argument('-m', '--mode', choices=['ascii', 'rtu'], default='rtu')
     parser.add_argument('-r', '--rate', type=int, action='append')
@@ -376,7 +376,9 @@ def main():
     logging.basicConfig(format='%(levelname)-8s %(message)s',
         level=logging.DEBUG if args.debug else logging.INFO, force=True)
 
-    logging.getLogger('pymodbus.client').setLevel(logging.CRITICAL)
+    if args.debug == 1:
+        logging.getLogger('pymodbus').setLevel(logging.CRITICAL)
+        logging.getLogger('vedbus').setLevel(logging.CRITICAL)
 
     signal.signal(signal.SIGINT, lambda s, f: os._exit(1))
     faulthandler.register(signal.SIGUSR1)
