@@ -33,4 +33,7 @@ install:
 		$(DESTDIR)$(bindir)
 	chmod +x $(DESTDIR)$(bindir)/$(firstword $(FILES))
 
+link:
+	ln -sf $(addprefix ext/velib_python/,$(VELIB)) .
+
 clean:
